@@ -16,4 +16,4 @@
 
 ## Workflow
 
-![Workflow]("C:\Users\PMLS\OneDrive\Pictures\Screenshots\Screenshot 2026-07-02 031209.png")
+![Workflow]("https://github.com/sabaraza786/n8n-Workflow/blob/main/Screenshot%202026-07-02%20031209.png")
