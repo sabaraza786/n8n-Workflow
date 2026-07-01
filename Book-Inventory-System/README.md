@@ -16,4 +16,4 @@
 
 ## Workflow
 
-![Workflow]("Book-Inventory-System/Screenshot 2026-07-02 031209.png")
+![Workflow](Screenshot%202026-07-02%20031209.png)
