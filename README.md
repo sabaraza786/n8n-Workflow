@@ -51,8 +51,9 @@ An AI-powered virtual receptionist built with **n8n** that automates patient com
 ## 📄 Files
 
 - `workflow.json` – n8n workflow
-- `Screenshot 2026-07-02 034229.png` – Workflow overview
-- `Screenshot 2026-07-02 034256.png` – Workflow execution
+- ![Workflow Overview](Screenshot%202026-07-02%20034229.png)
+
+![Workflow Execution](Screenshot%202026-07-02%20034256.png) ]
 
 ---
 
