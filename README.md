@@ -15,5 +15,4 @@
 - Airtable
 
 ## Workflow
-
-![Workflow]("Screenshot 2026-07-02 031209.png")
+![Workflow Screenshot](Screenshot%202026-07-02%20031209.png)
