@@ -1,0 +1,159 @@
+{
+  "name": "Check Availability",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f6b2eca3-a512-4460-b3eb-47fc5ce35b95",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        16
+      ],
+      "id": "0060b0de-09cb-486b-a9bd-20e7b5b01762",
+      "name": "Webhook",
+      "webhookId": "f6b2eca3-a512-4460-b3eb-47fc5ce35b95"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Role:\nYou are an Appointment Availability Checker. Your job is to receive the customer's requested appointment time and check it against the clinic's calendar to determine availability.\n\n# Current Time:\n{{ $now }}\n\n# Requested Appointment Time:\n{{ $json.body.time }}\n\n# Calendar Rules:\nWorking hours: 9:00 AM - 5:00 PM  \nAppointment length: 1 hour per slot  \n\n# Booking Logic:\n1. Check requested time\n   Verify whether the requested appointment time is within future working hours. Check if the slot is available.\n2. If the requested time is available\n   Confirm availability and ask the AI model to proceed with booking.\n3. If the requested time is unavailable\n   Suggest up to 2 alternative slots closest to the requested time (same day). Re-check each alternative slot using the calendar.\n4. If no slots are available on that day\n   Look at the next weekday starting from the current time.  \n   Suggest up to 3 available times on that next day.\n\n# Response & Output Requirements:\nYour response must be:  \n* Natural, conversational, and human-like  \n* Clear and friendly  \n* Based strictly on the availability logic above  \n\n# Examples:\n* If available:\n  \"Hey there! The time you requested — 10:00 AM on June 22nd — is available. Just to confirm, would you like to book this?\"  \n* If unavailable with alternatives:\n  \"Hey! That time isn't available, but I've found a couple of close options: 11:00 AM or 12:00 PM. Would either of these work for you?\"  \n* If no options for that day:\n  \"Unfortunately, there are no openings left for that day. But the next available day has times at 9:00 AM, 10:00 AM, and 11:00 AM. Want to pick one?\"  \n\n# Important Notes:\n* Never return any times in the past.  \n* Always compare the requested time to the provided current time.  \n* Strictly follow the step-by-step availability process.  \n* Accuracy directly affects the business's professionalism and customer trust.  \n* Keep all outputs short, friendly, and easy to understand.  \n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        80,
+        16
+      ],
+      "id": "32fe6602-4a5b-479b-8eef-a39bd39cbacb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        64,
+        288
+      ],
+      "id": "87d37990-506d-4946-b1cd-cac6f992aefa",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "OtbFsx5vgzeisVQ2",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "razasaba86@gmail.com",
+          "mode": "list",
+          "cachedResultName": "razasaba86@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        272
+      ],
+      "id": "3574a4c2-287d-463f-b9b1-1f6d0cb9602d",
+      "name": "Check Availability in Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "RtMKQ6wXUJ3snofn",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        16
+      ],
+      "id": "d81d6f7a-80e6-41a6-a09a-882a9d834fa5",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability in Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4617d626-e543-48ea-9b51-d36a11e4790f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "52dfeebfc976fdfcb775f6493509da83f017b0ba1c7eca97e4ee46e4250622d4"
+  },
+  "nodeGroups": [],
+  "id": "Y3KdsEUEQdWZDsrw",
+  "tags": []
+}
