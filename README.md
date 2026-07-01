@@ -25,18 +25,8 @@ An AI-powered virtual receptionist built with **n8n** that automates patient com
 
 ---
 
-## 📷 Workflow
 
-### Workflow Overview
 
-![Workflow](Screenshot%202026-07-02%20034229.png)
-
-### Workflow Execution
-
-![Workflow Overview](workflow-1.png)
-
-![Workflow Execution](workflow-2.png)
----
 
 ## 📥 Import Workflow
 
